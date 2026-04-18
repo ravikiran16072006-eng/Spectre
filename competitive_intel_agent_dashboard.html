@@ -1,0 +1,247 @@
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Competitive Intelligence Agent Dashboard UI mockup</h2>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.dash { display: flex; height: 100vh; min-height: 600px; background: var(--color-background-tertiary); }
+.sidebar { width: 200px; background: var(--color-background-primary); border-right: 0.5px solid var(--color-border-tertiary); padding: 1rem; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+.logo { font-size: 14px; font-weight: 500; color: var(--color-text-primary); padding: 0.5rem 0 1rem; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 0.5rem; }
+.logo span { color: #185FA5; }
+.nav-item { padding: 7px 10px; border-radius: var(--border-radius-md); font-size: 13px; color: var(--color-text-secondary); cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.nav-item.active { background: #E6F1FB; color: #185FA5; font-weight: 500; }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.6; }
+.comp-section { margin-top: 1rem; }
+.comp-label { font-size: 11px; color: var(--color-text-tertiary); padding: 0 10px; margin-bottom: 6px; letter-spacing: 0.04em; }
+.comp-item { padding: 6px 10px; border-radius: var(--border-radius-md); font-size: 13px; color: var(--color-text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+.comp-item.sel { background: var(--color-background-secondary); color: var(--color-text-primary); }
+.badge { font-size: 10px; padding: 2px 6px; border-radius: 20px; font-weight: 500; }
+.badge-red { background: #FCEBEB; color: #A32D2D; }
+.badge-amber { background: #FAEEDA; color: #854F0B; }
+.badge-green { background: #EAF3DE; color: #3B6D11; }
+.main { flex: 1; overflow-y: auto; padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+.topbar { display: flex; align-items: center; justify-content: space-between; }
+.page-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); }
+.run-btn { font-size: 12px; padding: 6px 14px; border-radius: var(--border-radius-md); background: #185FA5; color: #fff; border: none; cursor: pointer; font-weight: 500; }
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.metric-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem 1rem; }
+.metric-label { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 4px; }
+.metric-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.metric-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+.section-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 8px; }
+.alerts-list { display: flex; flex-direction: column; gap: 8px; }
+.alert-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 0.75rem 1rem; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
+.alert-card.high { border-left: 3px solid #E24B4A; }
+.alert-card.med { border-left: 3px solid #EF9F27; }
+.alert-card.low { border-left: 3px solid #639922; }
+.alert-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; margin-top: 1px; }
+.icon-red { background: #FCEBEB; color: #A32D2D; }
+.icon-amber { background: #FAEEDA; color: #854F0B; }
+.icon-green { background: #EAF3DE; color: #3B6D11; }
+.alert-body { flex: 1; }
+.alert-comp { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 2px; }
+.alert-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 3px; }
+.alert-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+.alert-meta { font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.panel { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem; }
+.timeline { display: flex; flex-direction: column; gap: 10px; }
+.tl-item { display: flex; gap: 10px; align-items: flex-start; }
+.tl-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+.tl-blue { background: #378ADD; }
+.tl-amber { background: #EF9F27; }
+.tl-red { background: #E24B4A; }
+.tl-gray { background: #888780; }
+.tl-body { flex: 1; }
+.tl-text { font-size: 12px; color: var(--color-text-primary); line-height: 1.5; }
+.tl-date { font-size: 11px; color: var(--color-text-tertiary); margin-top: 1px; }
+.tl-line { width: 1px; background: var(--color-border-tertiary); height: 10px; margin-left: 3.5px; }
+.insight-box { background: #E6F1FB; border-radius: var(--border-radius-md); padding: 0.75rem; margin-top: 0.75rem; }
+.insight-label { font-size: 11px; font-weight: 500; color: #185FA5; margin-bottom: 4px; }
+.insight-text { font-size: 12px; color: #0C447C; line-height: 1.5; }
+.comp-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; cursor: pointer; border: 0.5px solid var(--color-border-tertiary); color: var(--color-text-secondary); background: var(--color-background-secondary); }
+.pill.active { background: #E6F1FB; color: #185FA5; border-color: #B5D4F4; }
+.sparkline { display: flex; align-items: flex-end; gap: 3px; height: 36px; margin-top: 6px; }
+.bar { width: 12px; border-radius: 2px 2px 0 0; background: #B5D4F4; }
+.bar.hi { background: #378ADD; }
+</style>
+
+<div class="dash">
+  <div class="sidebar">
+    <div class="logo">Intel<span>Agent</span></div>
+    <div class="nav-item active"><div class="nav-dot"></div> Dashboard</div>
+    <div class="nav-item"><div class="nav-dot"></div> Alerts</div>
+    <div class="nav-item"><div class="nav-dot"></div> Memory log</div>
+    <div class="nav-item"><div class="nav-dot"></div> Reports</div>
+    <div class="nav-item"><div class="nav-dot"></div> Settings</div>
+    <div class="comp-section">
+      <div class="comp-label">COMPETITORS</div>
+      <div class="comp-item sel">Notion <span class="badge badge-red">High</span></div>
+      <div class="comp-item">Asana <span class="badge badge-amber">Med</span></div>
+      <div class="comp-item">Linear <span class="badge badge-green">Low</span></div>
+      <div class="comp-item">Monday <span class="badge badge-green">Low</span></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="page-title">Competitive overview</div>
+      <button class="run-btn" onclick="sendPrompt('Run the competitive intelligence agent now and show me the latest insights')">Run agent now ↗</button>
+    </div>
+
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="metric-label">Competitors tracked</div>
+        <div class="metric-val">4</div>
+        <div class="metric-sub">Active monitoring</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Alerts this week</div>
+        <div class="metric-val">7</div>
+        <div class="metric-sub">3 high priority</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Memory entries</div>
+        <div class="metric-val">142</div>
+        <div class="metric-sub">Stored in Hindsight</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Last scan</div>
+        <div class="metric-val" style="font-size:16px; margin-top:4px;">2h ago</div>
+        <div class="metric-sub">Next in 22h</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">Recent alerts</div>
+      <div class="alerts-list">
+        <div class="alert-card high">
+          <div class="alert-icon icon-red">N</div>
+          <div class="alert-body">
+            <div class="alert-comp">NOTION</div>
+            <div class="alert-title">Pricing dropped from $16 to $12/user</div>
+            <div class="alert-desc">This is the second price cut in 3 months. Cross-referencing with 15 recent AI engineer hires — likely aggressive pricing ahead of an AI feature launch.</div>
+            <div class="alert-meta">Today, 9:42 AM · HIGH urgency</div>
+          </div>
+          <span class="badge badge-red">High</span>
+        </div>
+        <div class="alert-card med">
+          <div class="alert-icon icon-amber">A</div>
+          <div class="alert-body">
+            <div class="alert-comp">ASANA</div>
+            <div class="alert-title">New integrations page detected</div>
+            <div class="alert-desc">Asana added 6 new integrations including Slack AI and Salesforce. Memory shows they added 4 integrations last quarter — accelerating pace.</div>
+            <div class="alert-meta">Yesterday, 3:15 PM · MEDIUM urgency</div>
+          </div>
+          <span class="badge badge-amber">Med</span>
+        </div>
+        <div class="alert-card low">
+          <div class="alert-icon icon-green">L</div>
+          <div class="alert-body">
+            <div class="alert-comp">LINEAR</div>
+            <div class="alert-title">New blog post: "Linear for enterprises"</div>
+            <div class="alert-desc">Linear published content targeting enterprise customers for the first time. Possible upmarket move.</div>
+            <div class="alert-meta">Apr 16, 11:00 AM · LOW urgency</div>
+          </div>
+          <span class="badge badge-green">Low</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="section-title">Notion — change timeline</div>
+        <div class="comp-pills">
+          <div class="pill active">All</div>
+          <div class="pill">Pricing</div>
+          <div class="pill">Jobs</div>
+          <div class="pill">Content</div>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div>
+              <div class="tl-dot tl-red"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-body">
+              <div class="tl-text">Price cut $16 → $12/user</div>
+              <div class="tl-date">Apr 18, 2026</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div>
+              <div class="tl-dot tl-amber"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-body">
+              <div class="tl-text">15 AI engineer job postings detected</div>
+              <div class="tl-date">Apr 10, 2026</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div>
+              <div class="tl-dot tl-blue"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-body">
+              <div class="tl-text">Homepage copy updated — "AI-first workspace"</div>
+              <div class="tl-date">Apr 3, 2026</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div>
+              <div class="tl-dot tl-gray"></div>
+            </div>
+            <div class="tl-body">
+              <div class="tl-text">Price cut $19 → $16/user</div>
+              <div class="tl-date">Mar 12, 2026</div>
+            </div>
+          </div>
+        </div>
+        <div class="insight-box">
+          <div class="insight-label">AI insight from Hindsight memory</div>
+          <div class="insight-text">Pattern detected: Notion has cut price twice, rebranded to "AI-first", and is aggressively hiring ML engineers. High probability of AI feature launch within 30–60 days. Recommended action: Accelerate your own AI roadmap or undercut on pricing now.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">Alert volume — last 7 days</div>
+        <div class="sparkline">
+          <div class="bar" style="height:40%"></div>
+          <div class="bar" style="height:55%"></div>
+          <div class="bar" style="height:30%"></div>
+          <div class="bar hi" style="height:80%"></div>
+          <div class="bar" style="height:45%"></div>
+          <div class="bar hi" style="height:100%"></div>
+          <div class="bar hi" style="height:90%"></div>
+        </div>
+        <div style="font-size:11px; color:var(--color-text-tertiary); margin-top:4px;">Mon → today</div>
+
+        <div style="margin-top:1.25rem;">
+          <div class="section-title">Hindsight memory log</div>
+          <div style="display:flex; flex-direction:column; gap:6px; margin-top:6px;">
+            <div style="font-size:12px; padding:8px 10px; background:var(--color-background-secondary); border-radius:var(--border-radius-md); color:var(--color-text-primary);">
+              <span style="color:var(--color-text-tertiary); font-size:11px;">notion_pricing</span><br>Stored: "$12/user as of Apr 18"
+            </div>
+            <div style="font-size:12px; padding:8px 10px; background:var(--color-background-secondary); border-radius:var(--border-radius-md); color:var(--color-text-primary);">
+              <span style="color:var(--color-text-tertiary); font-size:11px;">notion_jobs_latest</span><br>Stored: "15 ML/AI roles open Apr 10"
+            </div>
+            <div style="font-size:12px; padding:8px 10px; background:var(--color-background-secondary); border-radius:var(--border-radius-md); color:var(--color-text-primary);">
+              <span style="color:var(--color-text-tertiary); font-size:11px;">asana_integrations</span><br>Stored: "6 new integrations Apr 17"
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:1.25rem;">
+          <div class="section-title">Ask the agent</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <button style="text-align:left; font-size:12px; padding:7px 10px; border-radius:var(--border-radius-md); background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); color:var(--color-text-primary); cursor:pointer;" onclick="sendPrompt('What is Notion likely planning based on all collected memory?')">What is Notion planning? ↗</button>
+            <button style="text-align:left; font-size:12px; padding:7px 10px; border-radius:var(--border-radius-md); background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); color:var(--color-text-primary); cursor:pointer;" onclick="sendPrompt('How should we respond to Notion\'s pricing drop strategically?')">How should we respond to pricing drop? ↗</button>
+            <button style="text-align:left; font-size:12px; padding:7px 10px; border-radius:var(--border-radius-md); background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); color:var(--color-text-primary); cursor:pointer;" onclick="sendPrompt('Compare all 4 competitors and rank them by threat level')">Rank all competitors by threat level ↗</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

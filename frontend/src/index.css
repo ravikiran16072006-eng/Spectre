@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-background-tertiary: #f8fafc;
+    --color-background-secondary: #f1f5f9;
+    --color-background-primary: #ffffff;
+    --color-border-tertiary: #e2e8f0;
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #475569;
+    --color-text-tertiary: #94a3b8;
+    --border-radius-md: 0.375rem;
+    --border-radius-lg: 0.5rem;
+  }
+  
+  body {
+    background-color: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+  }
+}
+
+/* Hide scrollbar for clean dashboard look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
